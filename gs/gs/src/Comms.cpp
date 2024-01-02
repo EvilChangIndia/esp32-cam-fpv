@@ -12,7 +12,8 @@
 #include "Log.h"
 #include "Pool.h"
 #include "structures.h"
-
+#include <iostream>
+#include<unistd.h> 
 //#define DEBUG_PCAP
 
 static constexpr unsigned BLOCK_NUMS[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -596,11 +597,11 @@ bool Comms::prepare_pcap(std::string const& interface, PCap& pcap)
         LOGE("Error setting pcap_set_promisc: {}", pcap_geterr(pcap.pcap));
         return false;
     }
-    if (pcap_set_rfmon(pcap.pcap, 1) < 0)
+    /*if (pcap_set_rfmon(pcap.pcap, 1) < 0)
     {
         LOGE("Error setting pcap_set_rfmon: {}", pcap_geterr(pcap.pcap));
         return false;
-    }
+    }*/
     if (pcap_set_timeout(pcap.pcap, -1) < 0)
     {
         LOGE("Error setting pcap_set_timeout: {}", pcap_geterr(pcap.pcap));
@@ -617,6 +618,8 @@ bool Comms::prepare_pcap(std::string const& interface, PCap& pcap)
         return false;
     }
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::cout<<pcap.pcap;
+    //sleep(1);
     int res = pcap_activate(pcap.pcap);
     if (res < 0)
     {
